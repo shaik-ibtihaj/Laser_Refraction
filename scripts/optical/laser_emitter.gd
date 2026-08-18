@@ -149,4 +149,3 @@ func sync_line_cores(active_count: int):
 			var core = line.get_child(0) as Line2D
 			if core:
 				core.points = line.points
-

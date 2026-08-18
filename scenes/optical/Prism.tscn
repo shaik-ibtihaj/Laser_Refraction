@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/optical/prism.gd" id="1_prism_script"]
 
 [node name="Prism" type="StaticBody2D"]
+input_pickable = true
 script = ExtResource("1_prism_script")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]

@@ -18,15 +18,27 @@ func get_outgoing_directions(incoming_direction: Vector2, hit_normal: Vector2) -
 		eta = 1.0 / index_of_refraction
 	else:
 		# Exiting the prism (Glass -> Air)
-		# Hit normal points OUT of the shape, away from ray. 
-		# refracted() expects normal pointing against the ray.
 		actual_normal = -hit_normal
 		eta = index_of_refraction / 1.0
 		
-	var refracted = incoming_direction.refracted(actual_normal, eta)
+	var refracted = _refract_2d(incoming_direction, actual_normal, eta)
 	
 	if refracted == Vector2.ZERO:
 		# Total internal reflection
 		return [incoming_direction.bounce(actual_normal)]
 		
 	return [refracted]
+
+# Implementation of 2D Snell's Law Vector Refraction
+func _refract_2d(incident: Vector2, normal: Vector2, eta: float) -> Vector2:
+	var i = incident.normalized()
+	var n = normal.normalized()
+	var cos_i = -n.dot(i)
+	if cos_i < 0.0:
+		n = -n
+		cos_i = -n.dot(i)
+	var k = 1.0 - eta * eta * (1.0 - cos_i * cos_i)
+	if k < 0.0:
+		# Total internal reflection
+		return Vector2.ZERO
+	return (eta * i + (eta * cos_i - sqrt(k)) * n).normalized()

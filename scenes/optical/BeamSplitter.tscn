@@ -6,6 +6,7 @@
 size = Vector2(100, 10)
 
 [node name="BeamSplitter" type="StaticBody2D"]
+input_pickable = true
 script = ExtResource("1_splitter_script")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -16,4 +17,5 @@ offset_left = -50.0
 offset_top = -5.0
 offset_right = 50.0
 offset_bottom = 5.0
+mouse_filter = 2
 color = Color(0.8, 0.4, 1.0, 0.6)

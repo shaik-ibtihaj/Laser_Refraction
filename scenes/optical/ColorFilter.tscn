@@ -6,6 +6,7 @@
 size = Vector2(20, 100)
 
 [node name="ColorFilter" type="StaticBody2D"]
+input_pickable = true
 script = ExtResource("1_filter")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -16,4 +17,5 @@ offset_left = -10.0
 offset_top = -50.0
 offset_right = 10.0
 offset_bottom = 50.0
+mouse_filter = 2
 color = Color(1, 1, 1, 0.4)
