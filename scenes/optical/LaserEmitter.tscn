@@ -1,12 +1,26 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/optical/laser_emitter.gd" id="1_emitter_script"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_add"]
+blend_mode = 1
 
 [node name="LaserEmitter" type="Node2D"]
 script = ExtResource("1_emitter_script")
 
 [node name="BeamLine" type="Line2D" parent="."]
+material = SubResource("CanvasItemMaterial_add")
 points = PackedVector2Array(0, 0, 2000, 0)
-width = 4.0
-default_color = Color(0, 2, 2, 1)
+width = 7.0
+default_color = Color(0, 1, 1, 0.85)
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="CoreLine" type="Line2D" parent="BeamLine"]
+points = PackedVector2Array(0, 0, 2000, 0)
+width = 2.0
+default_color = Color(1, 1, 1, 0.95)
+begin_cap_mode = 2
+end_cap_mode = 2
 antialiased = true

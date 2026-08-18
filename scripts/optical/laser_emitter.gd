@@ -138,5 +138,15 @@ func calculate_laser_path():
 				
 			bounces += 1
 			
+	sync_line_cores(active_line_count)
 	hide_unused_lines(active_line_count)
 	hide_unused_sparks(active_spark_count)
+
+func sync_line_cores(active_count: int):
+	for i in range(active_count):
+		var line = line_pool[i]
+		if line.get_child_count() > 0:
+			var core = line.get_child(0) as Line2D
+			if core:
+				core.points = line.points
+

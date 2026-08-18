@@ -29,8 +29,15 @@ func get_outgoing_directions(incoming_direction: Vector2, hit_normal: Vector2) -
 
 # Calculates the new color of the laser after passing/bouncing
 func get_outgoing_color(incoming_color: Color) -> Color:
-	# Multiply the colors (e.g. White (1,1,1) * Red (1,0,0) = Red (1,0,0))
-	return incoming_color * tint_color
+	# Additive color mixing: White (1,1,1) + Red (1,0,0) = White (1,1,1)
+	# Red (1,0,0) + Green (0,1,0) = Yellow (1,1,0)
+	var new_color = Color(
+		min(incoming_color.r + tint_color.r, 1.0),
+		min(incoming_color.g + tint_color.g, 1.0),
+		min(incoming_color.b + tint_color.b, 1.0),
+		1.0
+	)
+	return new_color
 
 # Returns the origin point for the next laser segment. Allows portals to teleport the beam.
 func get_teleport_origin(hit_position: Vector2) -> Vector2:
@@ -47,9 +54,15 @@ func _on_mouse_exited():
 
 func _on_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton and event.pressed:
+		var levels = get_tree().get_nodes_in_group("level_manager")
+		if levels.size() > 0 and levels[0].game_over:
+			return # Cannot interact if game over
+			
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			rotation_degrees += 45.0
 			AudioManager.play_rotate()
+			if levels.size() > 0: levels[0].consume_move()
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			rotation_degrees -= 45.0
 			AudioManager.play_rotate()
+			if levels.size() > 0: levels[0].consume_move()

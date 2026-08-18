@@ -1,6 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://dqqwkjqwkj123"]
 
 [ext_resource type="Script" path="res://scripts/core/level_manager.gd" id="1_level_manager"]
+[ext_resource type="PackedScene" uid="uid://hud123" path="res://scenes/ui/HUD.tscn" id="2_hud"]
 [ext_resource type="PackedScene" path="res://scenes/optical/LaserEmitter.tscn" id="2_emitter"]
 [ext_resource type="PackedScene" path="res://scenes/optical/Mirror.tscn" id="3_mirror"]
 [ext_resource type="PackedScene" path="res://scenes/levels/Target.tscn" id="4_target"]
@@ -34,6 +35,8 @@ offset_right = 2000.0
 offset_bottom = 1500.0
 mouse_filter = 2
 color = Color(0.0196, 0.0196, 0.0392, 1)
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
 
 [node name="LaserEmitter" parent="." instance=ExtResource("2_emitter")]
 position = Vector2(100, 500)

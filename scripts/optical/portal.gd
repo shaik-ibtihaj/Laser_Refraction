@@ -20,3 +20,13 @@ func get_teleport_origin(hit_position: Vector2) -> Vector2:
 		if node and node is Portal:
 			return node.global_position
 	return hit_position
+
+var _time: float = 0.0
+
+func _process(delta):
+	_time += delta * 3.5
+	var aura = 0.75 + 0.25 * sin(_time)
+	var visual = get_node_or_null("ColorRect")
+	if visual:
+		visual.color.a = aura
+

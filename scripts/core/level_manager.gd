@@ -4,9 +4,39 @@ class_name LevelManager
 var total_targets: int = 0
 var powered_targets: int = 0
 var level_completed: bool = false
+var game_over: bool = false
+
+@export var level_number: int = 1
+@export var max_moves: int = 20
+@export var max_lives: int = 4
+
+var moves_remaining: int
+var lives: int
 
 func _ready():
+	add_to_group("level_manager")
+	moves_remaining = max_moves
+	lives = max_lives
 	call_deferred("_initialize_targets")
+
+func lose_life():
+	if game_over or level_completed: return
+	lives -= 1
+	print("Lost a life! Lives remaining: ", lives)
+	if lives <= 0:
+		_on_game_over()
+
+func consume_move():
+	if game_over or level_completed: return
+	moves_remaining -= 1
+	print("Move consumed! Moves remaining: ", moves_remaining)
+	if moves_remaining <= 0:
+		_on_game_over()
+
+func _on_game_over():
+	game_over = true
+	print("GAME OVER")
+
 
 func _initialize_targets():
 	var targets = get_tree().get_nodes_in_group("targets")
@@ -38,4 +68,12 @@ func _check_completion():
 		print("LEVEL INCOMPLETE")
 
 func _on_level_complete():
-	print("LEVEL COMPLETE! All targets powered.")
+	var stars = 1
+	if moves_remaining >= max_moves * 0.5:
+		stars = 3
+	elif moves_remaining >= max_moves * 0.2:
+		stars = 2
+	print("LEVEL COMPLETE! All targets powered. Stars earned: ", stars)
+	if get_node_or_null("/root/SaveManager"):
+		get_node("/root/SaveManager").save_level_completion(level_number, stars)
+
