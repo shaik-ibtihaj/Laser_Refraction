@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/optical/prism.gd" id="1_prism_script"]
+
+[node name="Prism" type="StaticBody2D"]
+script = ExtResource("1_prism_script")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+build_mode = 1
+polygon = PackedVector2Array(0, -60, 52, 30, -52, 30)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.4, 0.7, 1, 0.5)
+polygon = PackedVector2Array(0, -60, 52, 30, -52, 30)

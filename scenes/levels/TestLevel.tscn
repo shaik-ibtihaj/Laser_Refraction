@@ -1,0 +1,79 @@
+[gd_scene load_steps=13 format=3 uid="uid://dqqwkjqwkj123"]
+
+[ext_resource type="Script" path="res://scripts/core/level_manager.gd" id="1_level_manager"]
+[ext_resource type="PackedScene" path="res://scenes/optical/LaserEmitter.tscn" id="2_emitter"]
+[ext_resource type="PackedScene" path="res://scenes/optical/Mirror.tscn" id="3_mirror"]
+[ext_resource type="PackedScene" path="res://scenes/levels/Target.tscn" id="4_target"]
+[ext_resource type="PackedScene" path="res://scenes/optical/Prism.tscn" id="5_prism"]
+[ext_resource type="PackedScene" path="res://scenes/optical/BeamSplitter.tscn" id="6_splitter"]
+[ext_resource type="PackedScene" path="res://scenes/optical/ColorFilter.tscn" id="7_filter"]
+[ext_resource type="PackedScene" path="res://scenes/optical/Portal.tscn" id="8_portal"]
+[ext_resource type="PackedScene" path="res://scenes/optical/Absorber.tscn" id="9_absorber"]
+[ext_resource type="PackedScene" path="res://scenes/levels/Switch.tscn" id="10_switch"]
+[ext_resource type="PackedScene" path="res://scenes/levels/Door.tscn" id="11_door"]
+
+[sub_resource type="Environment" id="Environment_glow"]
+background_mode = 3
+glow_enabled = true
+glow_levels/1 = 0.5
+glow_levels/2 = 0.5
+glow_levels/3 = 0.5
+glow_levels/4 = 0.5
+glow_levels/5 = 0.2
+glow_blend_mode = 0
+glow_hdr_threshold = 1.0
+
+[node name="TestLevel" type="Node2D"]
+script = ExtResource("1_level_manager")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_glow")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 2000.0
+offset_bottom = 1500.0
+mouse_filter = 2
+color = Color(0.0196, 0.0196, 0.0392, 1)
+
+[node name="LaserEmitter" parent="." instance=ExtResource("2_emitter")]
+position = Vector2(100, 500)
+
+[node name="ColorFilter" parent="." instance=ExtResource("7_filter")]
+position = Vector2(200, 500)
+tint_color = Color(1, 0, 0, 1)
+
+[node name="PortalA" parent="." instance=ExtResource("8_portal")]
+position = Vector2(300, 500)
+linked_portal = NodePath("../PortalB")
+
+[node name="PortalB" parent="." instance=ExtResource("8_portal")]
+position = Vector2(600, 200)
+rotation = 0.785398
+linked_portal = NodePath("../PortalA")
+tint_color = Color(0.2, 0.8, 1.0, 1.0)
+
+[node name="BeamSplitter" parent="." instance=ExtResource("6_splitter")]
+position = Vector2(700, 300)
+rotation = 0.785398
+
+[node name="DoorSwitch" parent="." instance=ExtResource("10_switch")]
+position = Vector2(700, 600)
+required_color = Color(1, 0, 0, 1)
+
+[node name="Door" parent="." instance=ExtResource("11_door")]
+position = Vector2(850, 300)
+connected_switch = NodePath("../DoorSwitch")
+
+[node name="Target" parent="." instance=ExtResource("4_target")]
+position = Vector2(1000, 300)
+required_color = Color(1, 0, 0, 1)
+
+[node name="Prism" parent="." instance=ExtResource("5_prism")]
+position = Vector2(900, 200)
+
+[node name="Mirror" parent="." instance=ExtResource("3_mirror")]
+position = Vector2(900, 800)
+
+[node name="Absorber" parent="." instance=ExtResource("9_absorber")]
+position = Vector2(850, 600)
+rotation = -0.785398

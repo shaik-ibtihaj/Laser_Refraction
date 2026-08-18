@@ -1,0 +1,82 @@
+[gd_scene load_steps=10 format=3 uid="uid://level3123"]
+
+[ext_resource type="Script" path="res://scripts/core/level_manager.gd" id="1_level_manager"]
+[ext_resource type="PackedScene" path="res://scenes/optical/LaserEmitter.tscn" id="2_emitter"]
+[ext_resource type="PackedScene" path="res://scenes/levels/Target.tscn" id="3_target"]
+[ext_resource type="PackedScene" path="res://scenes/levels/Switch.tscn" id="4_switch"]
+[ext_resource type="PackedScene" path="res://scenes/levels/Door.tscn" id="5_door"]
+[ext_resource type="PackedScene" path="res://scenes/optical/Portal.tscn" id="6_portal"]
+[ext_resource type="PackedScene" path="res://scenes/optical/Absorber.tscn" id="7_absorber"]
+[ext_resource type="PackedScene" path="res://scenes/optical/Mirror.tscn" id="8_mirror"]
+[ext_resource type="PackedScene" path="res://scenes/optical/ColorFilter.tscn" id="9_filter"]
+
+[sub_resource type="Environment" id="Environment_glow"]
+background_mode = 3
+glow_enabled = true
+glow_levels/1 = 0.5
+glow_levels/2 = 0.5
+glow_levels/3 = 0.5
+glow_levels/4 = 0.5
+glow_levels/5 = 0.2
+glow_blend_mode = 0
+glow_hdr_threshold = 1.0
+
+[node name="Level3" type="Node2D"]
+script = ExtResource("1_level_manager")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_glow")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0.02, 0.02, 0.04, 1)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 400.0
+offset_bottom = 100.0
+text = "LEVEL 3: THE VAULT
+Use the portal to hit the switch."
+theme_override_font_sizes/font_size = 24
+
+[node name="LaserEmitter" parent="." instance=ExtResource("2_emitter")]
+position = Vector2(200, 500)
+
+[node name="ColorFilter" parent="." instance=ExtResource("9_filter")]
+position = Vector2(350, 500)
+tint_color = Color(0, 1, 0, 1)
+
+[node name="AbsorberWall" parent="." instance=ExtResource("7_absorber")]
+position = Vector2(500, 500)
+scale = Vector2(1, 5)
+
+[node name="PortalA" parent="." instance=ExtResource("6_portal")]
+position = Vector2(350, 200)
+linked_portal = NodePath("../PortalB")
+rotation = 1.5708
+
+[node name="PortalB" parent="." instance=ExtResource("6_portal")]
+position = Vector2(800, 200)
+linked_portal = NodePath("../PortalA")
+rotation = -1.5708
+
+[node name="Switch" parent="." instance=ExtResource("4_switch")]
+position = Vector2(800, 500)
+required_color = Color(0, 1, 0, 1)
+
+[node name="Door" parent="." instance=ExtResource("5_door")]
+position = Vector2(1000, 500)
+connected_switch = NodePath("../Switch")
+
+[node name="Target" parent="." instance=ExtResource("3_target")]
+position = Vector2(1300, 500)
+required_color = Color(0, 1, 0, 1)
+
+[node name="Mirror1" parent="." instance=ExtResource("8_mirror")]
+position = Vector2(350, 800)
+
+[node name="Mirror2" parent="." instance=ExtResource("8_mirror")]
+position = Vector2(800, 800)

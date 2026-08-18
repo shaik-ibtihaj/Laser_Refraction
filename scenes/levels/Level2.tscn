@@ -1,0 +1,71 @@
+[gd_scene load_steps=8 format=3 uid="uid://level2123"]
+
+[ext_resource type="Script" path="res://scripts/core/level_manager.gd" id="1_level_manager"]
+[ext_resource type="PackedScene" path="res://scenes/optical/LaserEmitter.tscn" id="2_emitter"]
+[ext_resource type="PackedScene" path="res://scenes/levels/Target.tscn" id="3_target"]
+[ext_resource type="PackedScene" path="res://scenes/optical/ColorFilter.tscn" id="4_filter"]
+[ext_resource type="PackedScene" path="res://scenes/optical/BeamSplitter.tscn" id="5_splitter"]
+[ext_resource type="PackedScene" path="res://scenes/optical/Mirror.tscn" id="6_mirror"]
+
+[sub_resource type="Environment" id="Environment_glow"]
+background_mode = 3
+glow_enabled = true
+glow_levels/1 = 0.5
+glow_levels/2 = 0.5
+glow_levels/3 = 0.5
+glow_levels/4 = 0.5
+glow_levels/5 = 0.2
+glow_blend_mode = 0
+glow_hdr_threshold = 1.0
+
+[node name="Level2" type="Node2D"]
+script = ExtResource("1_level_manager")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_glow")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0.02, 0.02, 0.04, 1)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 400.0
+offset_bottom = 100.0
+text = "LEVEL 2: SPLIT & FILTER
+Split the beam and match the colors."
+theme_override_font_sizes/font_size = 24
+
+[node name="LaserEmitter" parent="." instance=ExtResource("2_emitter")]
+position = Vector2(200, 500)
+
+[node name="BeamSplitter" parent="." instance=ExtResource("5_splitter")]
+position = Vector2(500, 500)
+rotation = 0.785398
+
+[node name="ColorFilterRed" parent="." instance=ExtResource("4_filter")]
+position = Vector2(700, 200)
+tint_color = Color(1, 0, 0, 1)
+
+[node name="ColorFilterBlue" parent="." instance=ExtResource("4_filter")]
+position = Vector2(700, 800)
+tint_color = Color(0, 0, 1, 1)
+
+[node name="TargetRed" parent="." instance=ExtResource("3_target")]
+position = Vector2(1000, 200)
+required_color = Color(1, 0, 0, 1)
+
+[node name="TargetBlue" parent="." instance=ExtResource("3_target")]
+position = Vector2(1000, 800)
+required_color = Color(0, 0, 1, 1)
+
+[node name="MirrorTop" parent="." instance=ExtResource("6_mirror")]
+position = Vector2(500, 200)
+rotation = 0.785398
+
+[node name="MirrorBottom" parent="." instance=ExtResource("6_mirror")]
+position = Vector2(500, 800)
+rotation = -0.785398
